@@ -35,7 +35,7 @@ npm install react-console
 ### Console
 
 `react-console` exports a console context with an additional `render` method.
-This can be a used a replacement to the global `console` object, however it
+This can be used as a replacement to the global `console` object, however it
 allows rendering of React components.
 
 #### Methods
@@ -64,26 +64,6 @@ console.render(<span>Ouch</span>, window.console, "error");
 // same as
 console.error(<span>Ouch</span>);
 ```
-
-### Host Components
-
-`react-console` only supports inline text elements.
-
-* `<a>`, `<abbr>`
-* `<b>`, `<bdi>`, `<bdo>`, `<br>`
-* `<cite>`, `<code>`
-* `<data>`, `<dfn>`
-* `<em>`
-* `<i>`
-* `<kbd>`
-* `<mark>`
-* `<q>`
-* `<rb>`, `<rp>`, `<rt>`, `<rtc>`, `<ruby>`
-* `<s>`, `<samp>`, `<small>`, `<span>`, `<strong>`, `<sub>`, `<sup>`
-* `<time>`
-* `<u>`
-* `<var>`
-* `<wbr>`
 
 #### Anchors
 
