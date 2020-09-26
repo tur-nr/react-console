@@ -1,6 +1,6 @@
 # React Console
 
-A reconciler for rendering components to the browser's console, because why not?
+A reconciler for rendering components to the browser's console, because why not.
 
 ```jsx
 import React from "react";
