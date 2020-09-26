@@ -10,12 +10,13 @@ const name = "Chris";
 const color = "#21a0a0";
 
 console.log(
-  <span>
-    Hello,
+  <div>
+    Hello,{" "}
     <strong>
       <em style={{ color }}>{name}</em>
-    </strong>!
-  </span>
+    </strong>
+    !
+  </div>
 );
 ```
 
@@ -56,11 +57,12 @@ argument is a React element.
 The methods above are just sugar for the `render` method.
 
 ```jsx
-import { render } from "react-console";
+import React from 'react';
+import console from "react-console";
 
-render(<span style={{ color: "red" }}>Ouch</span>, console, "error");
+console.render(<span>Ouch</span>, window.console, "error");
 // same as
-console.error(<span style={{ color: "red" }}>Ouch</span>);
+console.error(<span>Ouch</span>);
 ```
 
 ### Host Components
@@ -82,6 +84,20 @@ console.error(<span style={{ color: "red" }}>Ouch</span>);
 * `<u>`
 * `<var>`
 * `<wbr>`
+
+#### Anchors
+
+Anchor elements will have their hrefs appended.
+
+```js
+import React from "react";
+import console from "react-console";
+
+console.log(<a href="https://google.com">Google</a>);
+```
+
+![](support/screenshot-2.png)
+
 
 ### User Components
 
@@ -105,4 +121,4 @@ function Diff(props) {
 console.log(<Diff previous="foo" next="bar" />);
 ```
 
-![](support/screenshot-2.png)
+![](support/screenshot-3.png)

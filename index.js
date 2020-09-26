@@ -71,6 +71,7 @@ const reconciler = ReactReconciler({
   createInstance(type, props) {
     return {
       type,
+      props,
       style: Object.assign(styleForType(type), props.style),
       children: [],
     };
@@ -192,6 +193,11 @@ function recursivelyConcatenate(children, string, style, subs) {
             Object.assign({}, style, child.style),
             subs
           );
+
+          // append the href for anchor elements
+          if (child.type === "a" && child.props.href) {
+            string += " " + child.props.href;
+          }
           break;
       }
     }
@@ -208,6 +214,11 @@ function recursivelyConcatenate(children, string, style, subs) {
  */
 function styleForType(type) {
   switch (type) {
+    case "a":
+      return {
+        color: "blue",
+      };
+
     case "abbr":
       return {
         textDecoration: "underline dotted",
