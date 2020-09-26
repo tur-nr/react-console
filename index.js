@@ -60,40 +60,6 @@ Object.assign(exports, context, overrides);
 // INTERNALS BELOW
 // ////////////////////////////////////////////////////////////////////////////
 
-const inlineElements = [
-  "a",
-  "abbr",
-  "b",
-  "bdi",
-  "bdo",
-  "br",
-  "cite",
-  "code",
-  "data",
-  "dfn",
-  "em",
-  "i",
-  "kbd",
-  "mark",
-  "q",
-  "rb",
-  "rp",
-  "rt",
-  "rtc",
-  "ruby",
-  "s",
-  "samp",
-  "small",
-  "span",
-  "strong",
-  "sub",
-  "sup",
-  "time",
-  "u",
-  "var",
-  "wbr",
-];
-
 /**
  * The reconciler for the console.
  *
@@ -103,12 +69,6 @@ const reconciler = ReactReconciler({
   supportsPersistence: true,
 
   createInstance(type, props) {
-    if (!inlineElements.includes(type)) {
-      throw new Error(
-        "Invalid element: " + type + " is not an inline element."
-      );
-    }
-
     return {
       type,
       style: Object.assign(styleForType(type), props.style),
@@ -251,7 +211,7 @@ function styleForType(type) {
     case "abbr":
       return {
         textDecoration: "underline dotted",
-        fontStyle: "italics",
+        fontStyle: "italic",
         fontWeight: "lighter",
       };
 
@@ -270,7 +230,7 @@ function styleForType(type) {
     case "em":
     case "i":
       return {
-        fontStyle: "italics",
+        fontStyle: "italic",
       };
 
     case "ins":
