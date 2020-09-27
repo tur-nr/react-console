@@ -1,11 +1,9 @@
 {
   "name": "react-console",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0",
   "description": "A React reconciler for browser consoles.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "files": [],
   "author": "Christopher Turner <turner296@gmail.com>",
   "license": "MIT",
   "dependencies": {
