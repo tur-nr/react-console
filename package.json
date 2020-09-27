@@ -2,6 +2,21 @@
   "name": "react-console",
   "version": "1.0.0",
   "description": "A React reconciler for browser consoles.",
+  "keywords": [
+    "react",
+    "render",
+    "console",
+    "reconciler",
+    "browser"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tur-nr/react-console.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tur-nr/react-console/issues"
+  },
+  "homepage": "https://github.com/tur-nr/react-console#readme",
   "main": "index.js",
   "files": [],
   "author": "Christopher Turner <turner296@gmail.com>",
@@ -10,9 +25,13 @@
     "react-is": "^16.13.1",
     "react-reconciler": "^0.25.1"
   },
+  "peerDependencies": {
+    "react": "^16.13.1"
+  },
   "devDependencies": {
     "@types/react-is": "^16.7.1",
     "@types/react-reconciler": "^0.18.0",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "react": "^16.13.1"
   }
 }
