@@ -42,7 +42,7 @@ for (const name in context) {
         const root = arguments[0];
 
         // only try to render when a single argument of type element is given
-        if (arguments.length === 1 || isElement(root.type)) {
+        if (arguments.length === 1 && isElement(root)) {
           return render(root, context, name);
         }
 
@@ -72,7 +72,7 @@ const reconciler = ReactReconciler({
     return {
       type,
       props,
-      style: Object.assign(styleForType(type), props.style),
+      style: Object.assign(styleForType(type, props), props.style),
       children: [],
     };
   },
@@ -93,16 +93,6 @@ const reconciler = ReactReconciler({
     parentInstance.children.push(child);
   },
 
-  finalizeInitialChildren(
-    parentInstance,
-    type,
-    props,
-    rootContainerInstance,
-    hostContext
-  ) {},
-
-  finalizeContainerChildren(container, newChildren) {},
-
   replaceContainerChildren(container, newChildren) {
     const { context, method, committed } = container;
     if (committed) {
@@ -115,25 +105,18 @@ const reconciler = ReactReconciler({
     context[method].apply(context, [string].concat(subs));
   },
 
-  getChildHostContext(parentHostContext) {
-    return parentHostContext;
-  },
-
   resetAfterCommit(containerInfo) {
     containerInfo.committed = true;
   },
 
-  shouldSetTextContent(type, props) {},
-
-  getPublicInstance(instance) {},
-
+  // unknown required methods
+  finalizeContainerChildren() {},
+  finalizeInitialChildren() {},
+  getChildHostContext() {},
+  getPublicInstance() {},
   getRootHostContext() {},
-
-  prepareForCommit(containerInfo) {
-    if (containerInfo.committed) {
-      throw new Error("Console has already committed this root.");
-    }
-  },
+  prepareForCommit() {},
+  shouldSetTextContent() {},
 });
 
 /**
@@ -154,12 +137,7 @@ function render(root, context = console, method = "log") {
     false,
     false
   );
-
-  try {
-    reconciler.updateContainer(root, container, null, null);
-  } catch (e) {
-    context.error(e);
-  }
+  reconciler.updateContainer(root, container, null, null);
 }
 
 /**
@@ -180,25 +158,25 @@ function recursivelyConcatenate(children, string, style, subs) {
       subs.push(toCSSString(style));
       string += "%c" + child;
     } else {
+      const nextStyle = Object.assign({}, style, child.style);
+      let children = child.children;
+
       switch (child.type) {
         // break line = newline
         case "br":
-          string += "\n";
+          children = ["\n"];
           break;
 
-        default:
-          string = recursivelyConcatenate(
-            child.children,
-            string,
-            Object.assign({}, style, child.style),
-            subs
-          );
-
-          // append the href for anchor elements
-          if (child.type === "a" && child.props.href) {
-            string += " " + child.props.href;
-          }
+        case "img":
+          children = [" "];
           break;
+      }
+
+      string = recursivelyConcatenate(children, string, nextStyle, subs);
+
+      // append the href for anchor elements
+      if (child.type === "a" && child.props.href) {
+        string += " " + child.props.href;
       }
     }
   }
@@ -210,9 +188,10 @@ function recursivelyConcatenate(children, string, style, subs) {
  * Return some default styles for a given element type.
  *
  * @param {string} type
+ * @param {object} props
  * @returns {object}
  */
-function styleForType(type) {
+function styleForType(type, props) {
   switch (type) {
     case "a":
       return {
@@ -242,6 +221,16 @@ function styleForType(type) {
     case "i":
       return {
         fontStyle: "italic",
+      };
+
+    case "img":
+      return {
+        fontSize: 0,
+        paddingLeft:
+          typeof props.width === "string" ? props.width : props.width + "px",
+        paddingTop:
+          typeof props.height === "string" ? props.height : props.height + "px",
+        backgroundImage: "url(" + props.src + ")",
       };
 
     case "ins":
@@ -284,7 +273,7 @@ function styleForType(type) {
  *
  * @type {RegExp}
  */
-const CSS_PROP_NAME_REGEXP = /([a-z])([A-Z])/;
+const CSS_PROP_NAME_REGEXP = /([A-Z])/g;
 
 /**
  * Convert a given style object into CSS string value.
@@ -296,7 +285,7 @@ function toCSSString(style) {
   let cssString = "";
   for (const prop in style) {
     if (style.hasOwnProperty(prop)) {
-      const cssProp = prop.replace(CSS_PROP_NAME_REGEXP, "$1-$2").toLowerCase();
+      const cssProp = prop.replace(CSS_PROP_NAME_REGEXP, "-$1").toLowerCase();
       cssString += cssProp + ":" + style[prop] + ";";
     }
   }

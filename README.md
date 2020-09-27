@@ -57,7 +57,7 @@ argument is a React element.
 The methods above are just sugar for the `render` method.
 
 ```jsx
-import React from 'react';
+import React from "react";
 import console from "react-console";
 
 console.render(<span>Ouch</span>, window.console, "error");
@@ -68,6 +68,35 @@ console.error(<span>Ouch</span>);
 #### Anchors
 
 Anchor elements will have their hrefs appended.
+
+```js
+import React from "react";
+import console from "react-console";
+
+console.log(<a href="https://google.com">Google</a>);
+```
+
+![](support/screenshot-2.png)
+
+#### Images
+
+You can render images however you must provide `width` and `height` props.
+
+```jsx
+import React from "react";
+import console from "react-console";
+
+console.log(
+  <img
+    alt="Random kitten"
+    src="http://placekitten.com/180/150"
+    width={180}
+    height={150}
+  />
+);
+```
+
+![](support/screenshot-3.png)
 
 ```js
 import React from "react";
@@ -101,4 +130,59 @@ function Diff(props) {
 console.log(<Diff previous="foo" next="bar" />);
 ```
 
-![](support/screenshot-3.png)
+![](support/screenshot-4.png)
+
+### Caveats
+
+#### Logging elements
+
+To log the element object itself instead of rendering you can do this:
+
+```jsx
+console.log("%o", <Foo />);
+// or
+window.console.log(<Foo />);
+```
+
+#### No block or layout elements
+
+The console will only create `spans` for substitutions and removes any block
+styling. Trying to style complex layouts in the console won't work.
+
+However, you can try create block-like logs with a little padding trick.
+
+```jsx
+import React from "react";
+import console from "react-console";
+
+function ColorBlock(props) {
+  return (
+    <div
+      style={{
+        // use left/top paddings as if they were width/height
+        paddingLeft: "32px",
+        paddingTop: "32px",
+        // set the font size to zero
+        fontSize: 0,
+        backgroundColor: props.color,
+      }}
+    >
+      {/* render an empty string */}{" "}
+    </div>
+  );
+}
+
+console.log(
+  <>
+    <ColorBlock color="red" />
+    <ColorBlock color="orange" />
+    <ColorBlock color="yellow" />
+    <ColorBlock color="green" />
+    <ColorBlock color="blue" />
+    <ColorBlock color="indigo" />
+    <ColorBlock color="violet" />
+  </>
+);
+```
+
+![](support/screenshot-5.png)
