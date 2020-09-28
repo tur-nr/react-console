@@ -98,16 +98,6 @@ console.log(
 
 ![](support/screenshot-3.png)
 
-```js
-import React from "react";
-import console from "react-console";
-
-console.log(<a href="https://google.com">Google</a>);
-```
-
-![](support/screenshot-2.png)
-
-
 ### User Components
 
 You can render any user defined component as long as they result to host
