@@ -40,17 +40,17 @@ allows rendering of React components.
 
 #### Methods
 
-The following methods will render a component if the ***first and only***
+The following methods will render a component if the **_first and only_**
 argument is a React element.
 
-* `.log`
-* `.info`
-* `.debug`
-* `.warn`
-* `.error`
-* `.group`
-* `.groupCollapsed`
-* `.trace`
+- `.log`
+- `.info`
+- `.debug`
+- `.warn`
+- `.error`
+- `.group`
+- `.groupCollapsed`
+- `.trace`
 
 #### Render
 
@@ -123,6 +123,12 @@ console.log(<Diff previous="foo" next="bar" />);
 ![](support/screenshot-4.png)
 
 ### Caveats
+
+#### One-time log
+
+Logs are a one-time render, meaning components can't cause console logs.
+Therefore use of hooks will not work. Nor will self updating components via
+component lifecycles.
 
 #### Logging elements
 

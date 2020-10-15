@@ -6,9 +6,8 @@ const ReactReconciler = require("react-reconciler");
  *
  * @type {Console}
  */
-const context = typeof console.context === "function"
-  ? console.context()
-  : console;
+const context =
+  typeof console.context === "function" ? console.context() : console;
 
 /**
  * Methods
@@ -55,7 +54,7 @@ for (const name in context) {
 }
 
 // export the context and overrides
-Object.assign(exports, context, overrides);
+Object.assign(exports, context, overrides, { render });
 
 // INTERNALS BELOW
 // ////////////////////////////////////////////////////////////////////////////
@@ -135,7 +134,7 @@ function render(root, context = console, method = "log") {
       committed: false,
     },
     false,
-    false,
+    false
   );
   reconciler.updateContainer(root, container, null, null);
 }
@@ -226,11 +225,10 @@ function styleForType(type, props) {
     case "img":
       return {
         fontSize: 0,
-        paddingLeft: typeof props.width === "string"
-          ? props.width
-          : props.width + "px",
-        paddingTop: typeof props.height === "string" ? props.height
-        : props.height + "px",
+        paddingLeft:
+          typeof props.width === "string" ? props.width : props.width + "px",
+        paddingTop:
+          typeof props.height === "string" ? props.height : props.height + "px",
         backgroundImage: "url(" + props.src + ")",
       };
 
